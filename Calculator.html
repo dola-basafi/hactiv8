@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALCULATOR</title>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+    .btn {
+      width: 50px;
+      height: 50px;
+      font-size: 25px;
+      margin: 2px;
+      cursor: pointer;
+    }
+    .txt {
+      background-color: #b2f7ef;
+      text-align: right;
+      width: 90%;
+      margin: 5px;
+      font-size: 25px;
+      padding: 5px;
+    }
+    .calculator {
+      position: abdolute;
+      background-color: #dda15e;
+      margin:100px  auto;
+      width: 283px;
+    }
+    .calculator form{
+      margin : 0 auto;
+      width: 100%;
+    }
+    h1{
+      text-align: center;
+      padding-top:20px ;
+    }
+    .btn{
+      background-color: #118ab2;
+      color: white;
+    }
+    .btn:hover{
+      background-color: #50514f;
+    }
+    .home{
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>SIMPLE CALCULATOR</h1>
+  <div class="calculator">
+    <form name='form'>
+      <input type="text" class="txt" name="txt" value="0" readonly>
+    </form>
+    <table>
+      <tr>
+        <td><input class="btn" type='button' value="8" onclick="insert(8)"></td>
+        <td><input class="btn" type='button' value="7" onclick="insert(7)"></td>
+        <td><input class="btn" type='button' value="9" onclick="insert(9)"></td>
+        <td><input class="btn" type='button' value="/" onclick="operator('/')"></td>
+        <td><input class="btn" type='button' value="x" onclick="operator('*')"></td>
+      </tr>
+      <tr>
+        <td><input class="btn" type='button' value="4" onclick="insert(4)"></td>
+        <td><input class="btn" type='button' value="5" onclick="insert(5)"></td>
+        <td><input class="btn" type='button' value="6" onclick="insert(6)"></td>
+        <td><input class="btn" type='button' value="+" onclick="operator('+')"></td>
+        <td><input class="btn" type='button' value="-" onclick="operator('-')"></td>
+      </tr>
+      <tr>
+        <td><input class="btn" type='button' value="1" onclick="insert(1)"></td>
+        <td><input class="btn" type='button' value="2" onclick="insert(2)"></td>
+        <td><input class="btn" type='button' value="3" onclick="insert(3)"></td>
+        <td><input class="btn" type='button' value="(" onclick="square('(')"></td>
+        <td><input class="btn" type='button' value=")" onclick="square(')')"></td>
+      </tr>
+      <tr>
+        <td><input class="btn" type='button' value="0" onclick="insert(0)"></td>
+        <td><input class="btn" type='button' value="." onclick="dot()"></td>
+        <td><input class="btn" type='button' value="C" onclick="reset()"></td>
+        <td><input class="btn" type='button' value="Del" onclick="back()"></td>
+        <td><input class="btn" type='button' value="=" onclick="calculate()"></td>
+      </tr>
+    </table>
+  </div>
+  <div class="home">
+    <a href="index.html">BACK TO HOME</a>
+  </div>
+  <script>
+    let sqrCheck = 0
+    function square(sqr) {
+      console.log(sqrCheck)
+      let check = document.form.txt.value
+      let flag = false
+      if (sqr === ')') {
+        if (sqrCheck > 0) {
+          if (isNaN(Number(check[check.length - 1]))) {
+            if (check[check.length - 1] !== ')' || check[check.length - 1] === '(') {
+              flag = false
+            }else{
+              sqrCheck--
+              flag = true
+            }
+          } else {
+            sqrCheck--
+            flag = true
+          }
+        }
+      } else {
+        if (check == 0) {
+          sqrCheck += 1
+          document.form.txt.value = sqr
+        } else if (isNaN(Number(check[check.length - 1]))) {
+          if (check[check.length - 1] !== '.' && check[check.length - 1] !== ')') {
+            flag = true
+            sqrCheck += 1
+          }
+        }
+      }
+      if (flag) {
+        document.form.txt.value += sqr
+      }
+    }
+    function back() {
+      let check = document.form.txt.value
+      if (check[check.length - 1] === '(') {
+        if (sqrCheck > 0) {
+          sqrCheck--
+        }
+      }
+      if (check[check.length - 1] === ')') {       
+          sqrCheck++     
+      }
+      if (check.length === 1) {
+        document.form.txt.value = '0'
+      } else {
+        let temp = ''
+        for (let i = 0; i < check.length - 1; i++) {
+          temp += check[i]
+        }
+        document.form.txt.value = temp
+      }
+    }
+    function dot() {
+      let check = document.form.txt.value
+      let flag = false
+      for (let i = check.length - 1; i >= 0; i--) {
+        if (isNaN(Number(check[i]))) {
+          if (i === (check.length - 1) || check[i] === '.') {
+            flag = false
+            break
+          } else {
+            flag = true
+            break
+          }
+        }
+        flag = true
+      }
+      if (flag) {
+        document.form.txt.value += '.'
+      }
+    }
+    function operator(opr) {
+      let check = document.form.txt.value
+      if (Number(check[check.length - 1]) || check[check.length - 1] === ')') {
+        document.form.txt.value += opr
+      }
+    }
+    function reset() {
+      document.form.txt.value = "0"
+    }
+    function insert(angka) {
+      let check = document.form.txt.value
+      if (Number(check) !== 0) {
+        document.form.txt.value += angka
+      } else {
+        document.form.txt.value = angka
+      }
+    }
+    function calculate() {
+      let result = document.form.txt.value
+      if (result) {
+        document.form.txt.value = eval(result)
+      }
+    }
+  </script>
+</body>
+
+</html>
