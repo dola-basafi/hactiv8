@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jackpot</title>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+    #area,
+    #sensors {
+      display: block;
+    }
+
+    .text {
+      float: left;
+    }
+
+    .lb {
+      display: block;
+    }
+
+    form {
+      margin: 20px;
+    }
+
+    .home {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <form name='form'>
+    <br> sebelum di sensor
+    <textarea name="area" id="area" cols="30" rows="10"></textarea>
+    <label for="text" class="lb">kata yang di sensor</label>
+    <input type="text" name="text" id="text">
+    <input type='button' value="Generate" onclick="generate()" />
+    <br> hasil setelah di sensor
+    <textarea name="sensor" id="sensors" cols="30" rows="10" readonly></textarea>
+  </form>
+  <div class="home">
+    <a href="index.html">BACK TO HOME</a>
+  </div>
+  <script>
+    function wordSensor(kalimat, sensor, karakter) {
+      let result = ''
+      for (let i = 0; i < kalimat.length; i++) {
+      let temp = ''
+      let count = 0
+        if (kalimat[i] === sensor[0]) {
+          for (let j = 0; j < sensor.length; j++) {
+            if (kalimat[i + j] === sensor[j]) {
+              temp += karakter
+              count++
+            } else {
+              count = 0
+              break
+            }
+          }
+        }
+        if (count) {
+          result += temp
+          i += (count - 1)
+          continue
+        } else {
+          result += kalimat[i]
+        }
+      }
+      return result
+    }
+    function generate() {
+      let txt = document.getElementById("area").value
+      let sensor = document.getElementById('text').value
+      let result = wordSensor(txt, sensor.trim(), '*')
+      if (result[result.length - 1])
+        document.getElementById("sensors").value = result
+    }
+  </script>
+</body>
+
+</html>
